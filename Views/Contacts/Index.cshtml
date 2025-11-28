@@ -1,0 +1,106 @@
+@model IEnumerable<CRM.Models.Contact>
+
+@{
+    ViewData["Title"] = "Contacts";
+}
+
+<h1>Contacts</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New Contact</a>
+    <a asp-action="Index" class="btn btn-danger">Clear filters</a>
+</p>
+
+<form method="get" class="form-inline">
+    <input style="margin-right:3px" name="filter" class="form-control" 
+           placeholder="Last Names Filter" value="@ViewBag.filter" />
+    <button type="submit" class="btn btn-info mt-2">
+        Search
+    </button>
+</form>
+
+<br />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th width="10%">Name</th>
+            <th width="10%">Surname</th>
+            <th width="11%">Phone</th>
+            <th width="11%">Email</th>
+            <th width="11%">Position</th>
+            <th width="11%">Company</th>
+            <th width="11%">User</th>
+            <th width="25%"></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (item.IsDeleted == 0)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Surname</td>
+                    <td>@item.Phone</td>
+
+                    <!-- Email with mailto -->
+                    <td>
+                        <a href="mailto:@item.Email">@item.Email</a>
+                    </td>
+
+                    <td>@item.Position</td>
+
+                    <!-- COMPANY NAME FIXED -->
+                    <td>
+                        <a asp-controller="Companies" asp-action="Details" asp-route-id="@item.CompanyId">
+                            @{
+                                var company = ((List<CRM.Models.Company>)ViewBag.data)
+                                              .FirstOrDefault(c => c.Id == item.CompanyId);
+                            }
+
+                            @company?.Name
+                        </a>
+                    </td>
+
+                    <!-- USER NAME FIXED -->
+                    <td>
+                        @{
+                            var user = ((List<CRM.Models.User>)ViewBag.data2)
+                                       .FirstOrDefault(u => u.Id == item.UserId);
+                        }
+
+                        @if (item.UserId != ViewBag.userId)
+                        {
+                            <a asp-controller="Users" asp-action="Details" asp-route-id="@item.UserId">
+                                @user?.Login
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Accounts" asp-action="Details">
+                                @user?.Login
+                            </a>
+                        }
+                    </td>
+
+                    <!-- ACTION BUTTONS -->
+                    <td>
+                        @if (item.UserId == ViewBag.userId)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                        }
+                    </td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>

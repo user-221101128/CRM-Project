@@ -1,0 +1,94 @@
+@model CRM.Models.Contact
+
+@{
+    ViewData["Title"] = "Create Contact";
+}
+
+<h1>Create Contact</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Name -->
+            <div class="form-group mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Surname -->
+            <div class="form-group mb-3">
+                <label asp-for="Surname"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group mb-3">
+                <label asp-for="Phone"></label>
+                <input asp-for="Phone" type="tel" placeholder="123456789" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" type="email" placeholder="user@example.com" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Position -->
+            <div class="form-group mb-3">
+                <label asp-for="Position"></label>
+                <input asp-for="Position" class="form-control" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+
+            <!-- Company Dropdown -->
+            <div class="form-group mb-3">
+                <label asp-for="CompanyId">Company</label>
+
+                <select asp-for="CompanyId" class="form-control">
+                    <option value="">-- Select Company --</option>
+
+                    @foreach (var item in ViewBag.data)
+                    {
+                        // If coming from: Contacts/Create?com=ID
+                        if (ViewBag.companyId != null && item.Id == ViewBag.companyId)
+                        {
+                            <option value="@item.Id" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </div>
+
+            <!-- Hidden UserID -->
+            <input type="hidden" asp-for="UserId" value="@ViewBag.userId" />
+
+            <!-- Submit -->
+            <div class="form-group mt-3">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to List Of Contacts</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

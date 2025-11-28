@@ -1,0 +1,98 @@
+@model CRM.Models.Contact
+
+@{
+    ViewData["Title"] = "Edit Contact";
+}
+
+<h1>Edit Contact</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Hidden ID -->
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Name -->
+            <div class="form-group mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Surname -->
+            <div class="form-group mb-3">
+                <label asp-for="Surname"></label>
+                <input asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group mb-3">
+                <label asp-for="Phone"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <!-- Position -->
+            <div class="form-group mb-3">
+                <label asp-for="Position"></label>
+                <input asp-for="Position" class="form-control" />
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+
+            <!-- Company Dropdown -->
+            <div class="form-group mb-3">
+                <label asp-for="CompanyId">Company</label>
+                <select asp-for="CompanyId" class="form-control">
+
+                    @foreach (var item in ViewBag.data)
+                    {
+                        if (item.Id == Model.CompanyId)
+                        {
+                            <option value="@item.Id" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+
+                </select>
+                <span asp-validation-for="CompanyId" class="text-danger"></span>
+            </div>
+
+            <!-- User Id (readonly) -->
+            <div class="form-group mb-3">
+                <label asp-for="UserId"></label>
+                <input asp-for="UserId" class="form-control" readonly />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+
+            <!-- Submit -->
+            <div class="form-group mt-3">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to List of Contacts</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
