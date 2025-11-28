@@ -52,7 +52,11 @@ This system provides a clean dashboard, secure authentication, and user-friendly
 
 **Database:**  
 - SQL Server  
-- EF Core Code-First Migrations  
+- EF Core Code-First Migrations
+
+## Live Demo
+🔗 https://crm-project-nm3z.onrender.com
+ 
 
 **Tools & Others:**  
 - Visual Studio / VS Code  
